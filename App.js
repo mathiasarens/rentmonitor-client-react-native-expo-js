@@ -1,21 +1,148 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Button, TextInput, View } from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
+import OverviewScreen from './overview/OverviewScreen'
+import { createStackNavigator } from '@react-navigation/stack';
+import SignInScreen from './authentication/SignInScreen';
+import {AuthContext} from './AuthContext';
+import { NativeBaseProvider, Box } from 'native-base';
+import './i18n';
+import {useTranslation } from 'react-i18next';
 
-export default function App() {
+
+import Alert from './components/Alert';
+
+function NotificationsScreen({ navigation }) {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Button onPress={() => navigation.goBack()} title="Go back home" />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
+
+export default function App({ navigation }) {
+  const { t, i18n } = useTranslation();
+
+  const [state, dispatch] = React.useReducer(
+    (prevState, action) => {
+      switch (action.type) {
+        case 'RESTORE_TOKEN':
+          return {
+            ...prevState,
+            userToken: action.token,
+            isLoading: false,
+          };
+        case 'SIGN_IN':
+          return {
+            ...prevState,
+            isSignout: false,
+            userToken: action.token,
+          };
+        case 'SIGN_OUT':
+          return {
+            ...prevState,
+            isSignout: true,
+            userToken: null,
+          };
+      }
+    },
+    {
+      isLoading: true,
+      isSignout: false,
+      userToken: null,
+    }
+  );
+
+  React.useEffect(() => {
+    // Fetch the token from storage then navigate to our appropriate place
+    const bootstrapAsync = async () => {
+      let userToken;
+
+      try {
+        userToken = await SecureStore.getItemAsync('userToken');
+      } catch (e) {
+        // Restoring token failed
+      }
+
+      // After restoring token, we may need to validate it in production apps
+
+      // This will switch to the App screen or Auth screen and this loading
+      // screen will be unmounted and thrown away.
+      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+    };
+
+    bootstrapAsync();
+  }, []);
+
+  const authContext = React.useMemo(
+    () => ({
+      signIn: async data => {
+        fetch(`${process.env.REACT_APP_BACKEND_URL_PREFIX}/users/login`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({email: email, password: password}),
+        })
+          .then((response) => {
+            console.log(response.statusText);
+            return response.json();
+          })
+          .then((data) => {
+            console.log(data);
+            if (data.error) {
+              console.error(data.error);
+              Alert({
+                message: data.error.message,
+                variant: 'error',
+              });
+            } else {
+              dispatch({ type: 'SIGN_IN', token: data.token});
+              history.push('/home');
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+            Alert({
+              message: t('connectionError'),
+              variant: 'error',
+            });
+          });
+
+        
+      },
+      signOut: () => dispatch({ type: 'SIGN_OUT' }),
+      signUp: async data => {
+        // In a production app, we need to send user data to server and get a token
+        // We will also need to handle errors if sign up failed
+        // After getting token, we need to persist the token using `SecureStore`
+        // In the example, we'll use a dummy token
+
+        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+      },
+    }),
+    []
+  );
+
+  return (
+    <NativeBaseProvider>
+    <AuthContext.Provider value={authContext}>
+      <NavigationContainer>
+      <Stack.Navigator>
+        {state.userToken == null ? (
+          <Stack.Screen name="SignIn" component={SignInScreen} />
+        ) : (
+          <Stack.Screen name="Home" component={OverviewScreen} />
+        )}
+      </Stack.Navigator>
+      </NavigationContainer>
+    </AuthContext.Provider>
+    </NativeBaseProvider>
+  );
+}
