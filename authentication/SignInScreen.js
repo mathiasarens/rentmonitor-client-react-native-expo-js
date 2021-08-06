@@ -1,5 +1,5 @@
-import React from "react";
-import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import React, { useState } from "react";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native";
 import {
   Box,
@@ -13,19 +13,68 @@ import {
   Icon,
   IconButton,
   HStack,
-  Divider,
+  Alert,
 } from "native-base";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "./AuthContext";
+import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { REACT_APP_BACKEND_URL_PREFIX } from "@env";
 
 export default function SignInScreen() {
-  const [username, setUsername] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const { t, i18n } = useTranslation();
+  const [error, setError] = useState("");
 
   const { signIn } = React.useContext(AuthContext);
+
+  const onSubmit = (formInputs) => {
+    console.log("signing in", formInputs);
+    console.log(
+      "REACT_APP_BACKEND_URL_PREFIX",
+      `${REACT_APP_BACKEND_URL_PREFIX}/users/login`
+    );
+    fetch(`${REACT_APP_BACKEND_URL_PREFIX}/users/login`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formInputs),
+    })
+      .then((response) => {
+        console.log(response.statusText);
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        if (data.error) {
+          console.error(data.error);
+        } else {
+          dispatch({ type: "SIGN_IN", token: data.token });
+          history.push("/home");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        Alert({
+          message: t("connectionError"),
+          variant: "error",
+        });
+      });
+  };
 
   return (
     <ScrollView>
       <Box flex={1} p={2} w="90%" mx="auto">
+        <Alert>
+          <Alert.Icon />
+          <Alert.Title>{t("error")}</Alert.Title>
+          <Alert.Description>{error}</Alert.Description>
+        </Alert>
         <Heading size="lg" color="primary.500">
           Welcome
         </Heading>
@@ -40,7 +89,17 @@ export default function SignInScreen() {
             >
               Email ID
             </FormControl.Label>
-            <Input value={username} onChangeText={setUsername} />
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+              )}
+              name="email"
+              defaultValue=""
+            />
           </FormControl>
           <FormControl mb={5}>
             <FormControl.Label
@@ -48,10 +107,21 @@ export default function SignInScreen() {
             >
               Password
             </FormControl.Label>
-            <Input
-              value={password}
-              onChangeText={setPassword}
-              type="password"
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  type="password"
+                />
+              )}
+              name="password"
+              defaultValue=""
             />
             <Link
               _text={{ fontSize: "xs", fontWeight: "700", color: "cyan.500" }}
@@ -62,7 +132,11 @@ export default function SignInScreen() {
             </Link>
           </FormControl>
           <VStack space={2}>
-            <Button colorScheme="cyan" _text={{ color: "white" }}>
+            <Button
+              colorScheme="cyan"
+              _text={{ color: "white" }}
+              onPress={handleSubmit(onSubmit)}
+            >
               Login
             </Button>
 

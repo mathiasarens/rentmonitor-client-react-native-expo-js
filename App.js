@@ -1,22 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Button, TextInput, View } from 'react-native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
-import OverviewScreen from './overview/OverviewScreen'
-import { createStackNavigator } from '@react-navigation/stack';
-import SignInScreen from './authentication/SignInScreen';
-import {AuthContext} from './AuthContext';
-import { NativeBaseProvider, Box } from 'native-base';
-import './i18n';
-import {useTranslation } from 'react-i18next';
-
-
-import Alert from './components/Alert';
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { StyleSheet, Button, TextInput, View } from "react-native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { NavigationContainer } from "@react-navigation/native";
+import OverviewScreen from "./overview/OverviewScreen";
+import { createStackNavigator } from "@react-navigation/stack";
+import SignInScreen from "./authentication/SignInScreen";
+import { AuthContext } from "./authentication/AuthContext";
+import { NativeBaseProvider, Alert } from "native-base";
+import "./i18n";
+import { useTranslation } from "react-i18next";
+import {REACT_APP_BACKEND_URL_PREFIX} from "@env"
 
 function NotificationsScreen({ navigation }) {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Button onPress={() => navigation.goBack()} title="Go back home" />
     </View>
   );
@@ -31,19 +29,19 @@ export default function App({ navigation }) {
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
-        case 'RESTORE_TOKEN':
+        case "RESTORE_TOKEN":
           return {
             ...prevState,
             userToken: action.token,
             isLoading: false,
           };
-        case 'SIGN_IN':
+        case "SIGN_IN":
           return {
             ...prevState,
             isSignout: false,
             userToken: action.token,
           };
-        case 'SIGN_OUT':
+        case "SIGN_OUT":
           return {
             ...prevState,
             isSignout: true,
@@ -64,7 +62,7 @@ export default function App({ navigation }) {
       let userToken;
 
       try {
-        userToken = await SecureStore.getItemAsync('userToken');
+        userToken = await SecureStore.getItemAsync("userToken");
       } catch (e) {
         // Restoring token failed
       }
@@ -73,7 +71,7 @@ export default function App({ navigation }) {
 
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
-      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+      dispatch({ type: "RESTORE_TOKEN", token: userToken });
     };
 
     bootstrapAsync();
@@ -81,14 +79,19 @@ export default function App({ navigation }) {
 
   const authContext = React.useMemo(
     () => ({
-      signIn: async data => {
-        fetch(`${process.env.REACT_APP_BACKEND_URL_PREFIX}/users/login`, {
-          method: 'POST',
+      signIn: async (formInputs) => {
+        console.log("signing in", formInputs);
+        console.log(
+          "REACT_APP_BACKEND_URL_PREFIX",
+          `${REACT_APP_BACKEND_URL_PREFIX}/users/login`
+        );
+        fetch(`${REACT_APP_BACKEND_URL_PREFIX}/users/login`, {
+          method: "POST",
           headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
+            Accept: "application/json",
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({email: email, password: password}),
+          body: JSON.stringify(formInputs),
         })
           .then((response) => {
             console.log(response.statusText);
@@ -98,33 +101,28 @@ export default function App({ navigation }) {
             console.log(data);
             if (data.error) {
               console.error(data.error);
-              Alert({
-                message: data.error.message,
-                variant: 'error',
-              });
+
             } else {
-              dispatch({ type: 'SIGN_IN', token: data.token});
-              history.push('/home');
+              dispatch({ type: "SIGN_IN", token: data.token });
+              history.push("/home");
             }
           })
           .catch((error) => {
             console.error(error);
             Alert({
-              message: t('connectionError'),
-              variant: 'error',
+              message: t("connectionError"),
+              variant: "error",
             });
           });
-
-        
       },
-      signOut: () => dispatch({ type: 'SIGN_OUT' }),
-      signUp: async data => {
+      signOut: () => dispatch({ type: "SIGN_OUT" }),
+      signUp: async (data) => {
         // In a production app, we need to send user data to server and get a token
         // We will also need to handle errors if sign up failed
         // After getting token, we need to persist the token using `SecureStore`
         // In the example, we'll use a dummy token
 
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+        dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
       },
     }),
     []
@@ -132,17 +130,17 @@ export default function App({ navigation }) {
 
   return (
     <NativeBaseProvider>
-    <AuthContext.Provider value={authContext}>
-      <NavigationContainer>
-      <Stack.Navigator>
-        {state.userToken == null ? (
-          <Stack.Screen name="SignIn" component={SignInScreen} />
-        ) : (
-          <Stack.Screen name="Home" component={OverviewScreen} />
-        )}
-      </Stack.Navigator>
-      </NavigationContainer>
-    </AuthContext.Provider>
+      <AuthContext.Provider value={authContext}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            {state.userToken == null ? (
+              <Stack.Screen name="SignIn" component={SignInScreen} />
+            ) : (
+              <Stack.Screen name="Home" component={OverviewScreen} />
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AuthContext.Provider>
     </NativeBaseProvider>
   );
 }
