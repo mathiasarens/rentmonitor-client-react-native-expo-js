@@ -16,12 +16,16 @@ const resources = {
           translation: {
             hello: 'Hello world',
             change: 'Change language',
+            overview: 'Overview',
+            signIn: 'SignIn'
           },
         },
         de: {
           translation: {
             hello: 'Hallo',
             change: 'Sprache ändern',
+            overview: 'Uebersicht',
+            signIn: 'Anmelden'
           },
         },
       },
@@ -31,7 +35,7 @@ const resources = {
     .use(languageDetector)
     .use(initReactI18next)
     .init({
-      fallbackLng: 'en',
+      fallbackLng: 'de',
       debug: true,
       resources
     });

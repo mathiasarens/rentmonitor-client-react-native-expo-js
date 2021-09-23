@@ -138,9 +138,9 @@ export default function App({ navigation }) {
         <NavigationContainer>
           <Stack.Navigator>
             {state.userToken == null ? (
-              <Stack.Screen name="SignIn" component={SignInScreen} />
+              <Stack.Screen name={t('signIn')} component={SignInScreen} />
             ) : (
-              <Stack.Screen name="Home" component={OverviewScreen} />
+              <Stack.Screen name={t('overview')} component={OverviewScreen} />
             )}
           </Stack.Navigator>
         </NavigationContainer>
