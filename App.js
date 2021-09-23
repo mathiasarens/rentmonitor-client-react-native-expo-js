@@ -6,11 +6,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import OverviewScreen from "./overview/OverviewScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import SignInScreen from "./authentication/SignInScreen";
-import { AuthContext } from "./authentication/AuthContext";
+import { AuthContext, ACCESS_TOKEN } from "./authentication/AuthContext";
 import { NativeBaseProvider, Alert } from "native-base";
 import "./i18n";
 import { useTranslation } from "react-i18next";
-import {REACT_APP_BACKEND_URL_PREFIX} from "@env"
+import { REACT_APP_BACKEND_URL_PREFIX } from "@env";
+import * as SecureStore from "expo-secure-store";
 
 function NotificationsScreen({ navigation }) {
   return (
@@ -62,9 +63,9 @@ export default function App({ navigation }) {
       let userToken;
 
       try {
-        userToken = await SecureStore.getItemAsync("userToken");
+        userToken = await SecureStore.getItemAsync(ACCESS_TOKEN);
       } catch (e) {
-        // Restoring token failed
+        console.error("Failed to restore ACCESS_TOKEN", e);
       }
 
       // After restoring token, we may need to validate it in production apps
@@ -85,37 +86,40 @@ export default function App({ navigation }) {
           "REACT_APP_BACKEND_URL_PREFIX",
           `${REACT_APP_BACKEND_URL_PREFIX}/users/login`
         );
-        fetch(`${REACT_APP_BACKEND_URL_PREFIX}/users/login`, {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formInputs),
-        })
-          .then((response) => {
-            console.log(response.statusText);
-            return response.json();
-          })
-          .then((data) => {
-            console.log(data);
-            if (data.error) {
-              console.error(data.error);
-
-            } else {
-              dispatch({ type: "SIGN_IN", token: data.token });
-              history.push("/home");
+        try {
+          const response = await fetch(
+            `${REACT_APP_BACKEND_URL_PREFIX}/users/login`,
+            {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(formInputs),
             }
-          })
-          .catch((error) => {
-            console.error(error);
-            Alert({
-              message: t("connectionError"),
-              variant: "error",
-            });
+          );
+          console.log(response.statusText);
+          const json = await response.json();
+
+          console.log(json);
+          if (json.error) {
+            console.error(json.error);
+          } else {
+            await SecureStore.setItemAsync(ACCESS_TOKEN, action.token);
+            dispatch({ type: "SIGN_IN", token: json.token });
+          }
+        } catch (error) {
+          console.error(error);
+          Alert({
+            message: t("connectionError"),
+            variant: "error",
           });
+        }
       },
-      signOut: () => dispatch({ type: "SIGN_OUT" }),
+      signOut: async () => {
+        await SecureStore.deleteItemAsync(ACCESS_TOKEN);
+        dispatch({ type: "SIGN_OUT" });
+      },
       signUp: async (data) => {
         // In a production app, we need to send user data to server and get a token
         // We will also need to handle errors if sign up failed

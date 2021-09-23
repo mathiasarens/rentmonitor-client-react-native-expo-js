@@ -15,10 +15,11 @@ import {
   HStack,
   Alert,
 } from "native-base";
-import { AuthContext } from "./AuthContext";
+import { AuthContext, ACCESS_TOKEN } from "./AuthContext";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { REACT_APP_BACKEND_URL_PREFIX } from "@env";
+import * as SecureStore from 'expo-secure-store';
 
 export default function SignInScreen() {
   const {
@@ -30,43 +31,6 @@ export default function SignInScreen() {
   const [error, setError] = useState("");
 
   const { signIn } = React.useContext(AuthContext);
-
-  const onSubmit = (formInputs) => {
-    console.log("signing in", formInputs);
-    console.log(
-      "REACT_APP_BACKEND_URL_PREFIX",
-      `${REACT_APP_BACKEND_URL_PREFIX}/users/login`
-    );
-    fetch(`${REACT_APP_BACKEND_URL_PREFIX}/users/login`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formInputs),
-    })
-      .then((response) => {
-        console.log(response.statusText);
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        if (data.error) {
-          console.error(data.error);
-        } else {
-          dispatch({ type: "SIGN_IN", token: data.token });
-          history.push("/home");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        Alert({
-          message: t("connectionError"),
-          variant: "error",
-        });
-      });
-  };
-
   return (
     <ScrollView>
       <Box flex={1} p={2} w="90%" mx="auto">
@@ -135,7 +99,7 @@ export default function SignInScreen() {
             <Button
               colorScheme="cyan"
               _text={{ color: "white" }}
-              onPress={handleSubmit(onSubmit)}
+              onPress={handleSubmit(signIn)}
             >
               Login
             </Button>
