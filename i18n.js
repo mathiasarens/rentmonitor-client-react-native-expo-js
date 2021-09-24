@@ -17,7 +17,10 @@ const resources = {
             hello: 'Hello world',
             change: 'Change language',
             overview: 'Overview',
-            signIn: 'SignIn'
+            signIn: 'SignIn',
+            unauthenticatedError: 'Session expired',
+            connectionError: 'Remote connection error'
+
           },
         },
         de: {
@@ -25,7 +28,9 @@ const resources = {
             hello: 'Hallo',
             change: 'Sprache ändern',
             overview: 'Uebersicht',
-            signIn: 'Anmelden'
+            signIn: 'Anmelden',
+            unauthenticatedError: 'Sitzung abgelaufen',
+            connectionError: 'Verbindungsfehler'
           },
         },
       },

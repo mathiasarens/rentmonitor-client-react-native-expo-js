@@ -1,18 +1,19 @@
-import {AUTH_TOKEN} from '../Constants';
+import {AuthContext, ACCESS_TOKEN} from './AuthContext';
+import * as SecureStore from "expo-secure-store";
+import { REACT_APP_BACKEND_URL_PREFIX } from "@env";
+import { Alert } from "native-base";
 
-export function authenticatedFetch(urlSuffix, navigation, options) {
-  options.headers['Authorization'] = `Bearer ${sessionStorage.getItem(
-    AUTH_TOKEN,
-  )}`;
+export async function authenticatedFetch(urlSuffix, options) {
+  const { signOut } = React.useContext(AuthContext);
+  options.headers['Authorization'] = `Bearer ${await SecureStore.getItemAsync(ACCESS_TOKEN)}`;
   return fetch(
-    `${process.env.REACT_APP_BACKEND_URL_PREFIX}${urlSuffix}`,
+    `${REACT_APP_BACKEND_URL_PREFIX}${urlSuffix}`,
     options,
   ).then((response) => {
     if (!response.ok) {
       if ([401, 403].indexOf(response.status) !== -1) {
         // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-        sessionStorage.removeItem(AUTH_TOKEN);
-        navigation.push('/signin');
+        signOut();
       }
       return Promise.reject(response);
     } else {
