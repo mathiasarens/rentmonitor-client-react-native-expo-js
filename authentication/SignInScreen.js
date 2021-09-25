@@ -1,25 +1,14 @@
-import React, { useState } from "react";
-import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
-import { ScrollView } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
-  Box,
-  Text,
-  Heading,
-  VStack,
-  FormControl,
-  Input,
-  Link,
-  Button,
-  Icon,
-  IconButton,
-  HStack,
-  Alert,
+  Box, Button, FormControl, Heading, HStack, Icon,
+  IconButton, Input,
+  Link, Text, VStack
 } from "native-base";
-import { AuthContext, ACCESS_TOKEN } from "./AuthContext";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { REACT_APP_BACKEND_URL_PREFIX } from "@env";
-import * as SecureStore from 'expo-secure-store';
+import { ScrollView } from "react-native";
+import { AuthContext } from "./AuthContext";
 
 export default function SignInScreen() {
   const {
@@ -28,19 +17,13 @@ export default function SignInScreen() {
     formState: { errors },
   } = useForm();
   const { t, i18n } = useTranslation();
-  const [error, setError] = useState("");
 
   const { signIn } = React.useContext(AuthContext);
   return (
     <ScrollView>
       <Box flex={1} p={2} w="90%" mx="auto">
-        <Alert>
-          <Alert.Icon />
-          <Alert.Title>{t("error")}</Alert.Title>
-          <Alert.Description>{error}</Alert.Description>
-        </Alert>
         <Heading size="lg" color="primary.500">
-          Welcome
+          {t('welcome')}
         </Heading>
         <Heading color="muted.400" size="xs">
           Sign in to continue!

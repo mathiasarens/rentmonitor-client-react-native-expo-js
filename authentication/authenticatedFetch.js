@@ -1,10 +1,9 @@
-import {AuthContext, ACCESS_TOKEN} from './AuthContext';
+import { ACCESS_TOKEN} from './AuthContext';
 import * as SecureStore from "expo-secure-store";
 import { REACT_APP_BACKEND_URL_PREFIX } from "@env";
-import { Alert } from "native-base";
 
-export async function authenticatedFetch(urlSuffix, options) {
-  const { signOut } = React.useContext(AuthContext);
+export async function authenticatedFetch(urlSuffix, signOut, options) {
+
   options.headers['Authorization'] = `Bearer ${await SecureStore.getItemAsync(ACCESS_TOKEN)}`;
   return fetch(
     `${REACT_APP_BACKEND_URL_PREFIX}${urlSuffix}`,

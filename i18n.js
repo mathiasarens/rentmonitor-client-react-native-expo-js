@@ -5,13 +5,13 @@ import { initReactI18next } from 'react-i18next';
 const languageDetector = {
     type: 'languageDetector',
     async: true,
-    detect: cb => cb('en'),
+    detect: cb => cb('de'),
     init: () => {},
     cacheUserLanguage: () => {},
   };
   
 const resources = {
-    resources: {
+
         en: {
           translation: {
             hello: 'Hello world',
@@ -19,8 +19,8 @@ const resources = {
             overview: 'Overview',
             signIn: 'SignIn',
             unauthenticatedError: 'Session expired',
-            connectionError: 'Remote connection error'
-
+            connectionError: 'Remote connection error',
+            welcome: 'Welcome'
           },
         },
         de: {
@@ -30,10 +30,11 @@ const resources = {
             overview: 'Uebersicht',
             signIn: 'Anmelden',
             unauthenticatedError: 'Sitzung abgelaufen',
-            connectionError: 'Verbindungsfehler'
+            connectionError: 'Verbindungsfehler',
+            welcome: 'Willkommen'
           },
         },
-      },
+      
 }
 
   i18next

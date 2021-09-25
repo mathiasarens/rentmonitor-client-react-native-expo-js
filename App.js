@@ -12,7 +12,7 @@ import "./i18n";
 import { useTranslation } from "react-i18next";
 import { REACT_APP_BACKEND_URL_PREFIX } from "@env";
 import * as SecureStore from "expo-secure-store";
-
+import { useToast } from "native-base";
 function NotificationsScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -20,13 +20,11 @@ function NotificationsScreen({ navigation }) {
     </View>
   );
 }
-
-const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
 export default function App({ navigation }) {
   const { t, i18n } = useTranslation();
-
+  const toast = useToast()
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -105,14 +103,13 @@ export default function App({ navigation }) {
           if (json.error) {
             console.error(json.error);
           } else {
-            await SecureStore.setItemAsync(ACCESS_TOKEN, action.token);
+            await SecureStore.setItemAsync(ACCESS_TOKEN, json.token);
             dispatch({ type: "SIGN_IN", token: json.token });
           }
         } catch (error) {
           console.error(error);
-          Alert({
-            message: t("connectionError"),
-            variant: "error",
+          toast.show({
+            title: t("connectionError"),
           });
         }
       },

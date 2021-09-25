@@ -1,14 +1,18 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { Button, View } from 'react-native';
 import { useTranslation } from "react-i18next";
 import { authenticatedFetch, handleAuthenticationError } from '../authentication/authenticatedFetch';
-import { Alert } from "native-base";
+import { useToast } from "native-base";
+import {AuthContext} from '../authentication/AuthContext';
 
 export default function OverviewScreen({ navigation }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
+  const toast = useToast();
+  const { signOut } = React.useContext(AuthContext);
+  const [ bookingSumPerTenant, setBookingSumPerTenants] = useState([]);
 
   const loadTenantBookingOverview = useCallback(() => {
-    authenticatedFetch('/tenant-booking-overview', {
+    authenticatedFetch('/tenant-booking-overview', signOut, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -21,9 +25,9 @@ export default function OverviewScreen({ navigation }) {
         setBookingSumPerTenants(data);
       })
       .catch((error) => {
-        Alert({
-          message: t(handleAuthenticationError(error)),
-          variant: 'error',
+        console.error(error);
+        toast.show({
+          title: t(handleAuthenticationError(error))
         });
       });
   }, [t, navigation]);
@@ -35,8 +39,8 @@ export default function OverviewScreen({ navigation }) {
   return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Button
-          onPress={() => navigation.navigate('Notifications')}
-          title="Go to notifications"
+          onPress={() => loadTenantBookingOverview()}
+          title="load"
         />
       </View>
     );
