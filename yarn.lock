@@ -2016,10 +2016,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.10.tgz#5dda643e19e587793bc2034dd9bf7398ad43d401"
   integrity sha512-rk4sWFsmtOw8oyx8SD3KSvawwaK7gRBSEIy2TAwURyGt+3TizssXP1r8nx3zY+R7v2vYYHXZ+k2/GULAT/bcaQ==
 
-"@react-navigation/core@^6.0.1":
-  version "6.0.1"
-  resolved "https://registry.npmjs.org/@react-navigation/core/-/core-6.0.1.tgz"
-  integrity sha512-mVdvBDYdz8uzLQHokmVdX/xC4rS7NIkD1FN/yaGdovVzYApAhM+UGd3w1zskjyCSyXaVHHOwV59ZGVew+84xfQ==
+"@react-navigation/core@^6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-6.0.2.tgz#301be6c28211ae2571f3e9e3f74c8f077619ccdd"
+  integrity sha512-Omsb670qmNfO0KGiRrOE+KXpCYQ6jXxE5uCPnj5srW31s6YDGiFl/M5sRcMyBdDXLXp5HjkQTJpU9ilmjKtL5g==
   dependencies:
     "@react-navigation/routers" "^6.0.1"
     escape-string-regexp "^4.0.0"
@@ -2027,26 +2027,26 @@
     query-string "^7.0.0"
     react-is "^16.13.0"
 
-"@react-navigation/drawer@^6.1.4":
-  version "6.1.4"
-  resolved "https://registry.npmjs.org/@react-navigation/drawer/-/drawer-6.1.4.tgz"
-  integrity sha512-lmWV/Hxd60LFLsHESOXkDXZmzqpXHoRhBdaxk5FvQHXSBYm+ZB0bP9vq5nTCzUby513wTyM381GBujdgYWCGRA==
+"@react-navigation/drawer@^6.1.6":
+  version "6.1.6"
+  resolved "https://registry.yarnpkg.com/@react-navigation/drawer/-/drawer-6.1.6.tgz#550a7bfafedb30bead918711e406158d54413b39"
+  integrity sha512-HH/2dP8YxskGCqHpgrUorAfvlGRLpP8FzhzK4fWPwLjKUOxFaFDBw2zXz3c5rsH0Z9AObkSI9F9ibEsRvA3FFA==
   dependencies:
-    "@react-navigation/elements" "^1.1.0"
+    "@react-navigation/elements" "^1.1.2"
     color "^3.1.3"
     warn-once "^0.1.0"
 
-"@react-navigation/elements@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.npmjs.org/@react-navigation/elements/-/elements-1.1.0.tgz"
-  integrity sha512-jZncciZPGuoP6B6f+Wpf6MYSSYy86B2HJDbFTCtT5xZV0w6V9GgCeqvSTOEAxifZrmKl8uDxsr0GrIxgQE8NxA==
+"@react-navigation/elements@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-1.1.2.tgz#82d8978489e47e7c54f67c453ba4a124046fe253"
+  integrity sha512-PbPCleC1HpUlXtuP0DFNCNTEhRLd6lmB0KxY0SGRGqCemS3HpG/PajEQ1LDe7S51M03a1tDby1MfKTkNanUXAg==
 
-"@react-navigation/native@^6.0.2":
-  version "6.0.2"
-  resolved "https://registry.npmjs.org/@react-navigation/native/-/native-6.0.2.tgz"
-  integrity sha512-HDqEwgvQ4Cu16vz8jQ55lfyNK9CGbECI1wM9cPOcUa+gkOQEDZ/95VFfFjGGflXZs3ybPvGXlMC4ZAyh1CcO6w==
+"@react-navigation/native@^6.0.4":
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-6.0.4.tgz#8a9710ce4e9b903ea12c4a4fce8709f5a37e15fe"
+  integrity sha512-497dGGDIZ8hDCPGj6GXZvLGHk6NvZk5k4r1cjwgqcXwutK5fS7sgD0dZP52NTQC3GvLe8PZNv6AEdMIqFrZK6A==
   dependencies:
-    "@react-navigation/core" "^6.0.1"
+    "@react-navigation/core" "^6.0.2"
     escape-string-regexp "^4.0.0"
     nanoid "^3.1.23"
 
@@ -2057,12 +2057,12 @@
   dependencies:
     nanoid "^3.1.23"
 
-"@react-navigation/stack@^6.0.7":
-  version "6.0.7"
-  resolved "https://registry.npmjs.org/@react-navigation/stack/-/stack-6.0.7.tgz"
-  integrity sha512-hxwhRZbn6zD2rInhItBeHTCPYzmurz+/8/MhtRevBEdLG0+61dik8Y+evg/mu6AsOU0WrDakTsLcHdf/9zkXzw==
+"@react-navigation/stack@^6.0.9":
+  version "6.0.9"
+  resolved "https://registry.yarnpkg.com/@react-navigation/stack/-/stack-6.0.9.tgz#a4c38df732d6dfefc39d8c80411aa066fcaeb358"
+  integrity sha512-LV9MlxqOH6+wgU7LxhaTRSY+WTuzNa2NnOCji9nyAA4Xohp9tpuLhYJRYdNRWXBcfseBqz1o4L0LAxRMv+CXYQ==
   dependencies:
-    "@react-navigation/elements" "^1.1.0"
+    "@react-navigation/elements" "^1.1.2"
     color "^3.1.3"
     warn-once "^0.1.0"
 
@@ -2486,6 +2486,18 @@
   integrity sha512-c3mAZEuK0lvBp8tmuL74XRKn1+y2dcwOUpH7x4WrF6gk1GIgiluDRgMYQtw2OFcBvAJWlt6ASU3tSqxp0Uu0Aw==
   dependencies:
     "@types/istanbul-lib-report" "*"
+
+"@types/lodash.has@^4.5.6":
+  version "4.5.6"
+  resolved "https://registry.yarnpkg.com/@types/lodash.has/-/lodash.has-4.5.6.tgz#d94d3f0b45ced2ae76d632080daf70e9b76e29eb"
+  integrity sha512-SpUCvze0uHilQX/mt4K/cak5OQny1pVfz3pJx6H70dE3Tvw9s7EtlMK+vY6UBS+PQgETDfv6vhwoa3FPS2wrhg==
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash@*":
+  version "4.14.174"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.174.tgz#b4b06b6eced9850eed6b6a8f1abdd0f5192803c1"
+  integrity sha512-KMBLT6+g9qrGXpDt7ohjWPUD34WA/jasrtjTEHStF0NPdEwJ1N9SZ+4GaMVDeuk/y0+X5j9xFm6mNiXS7UoaLQ==
 
 "@types/node@*":
   version "16.9.4"
@@ -4559,10 +4571,10 @@ http-errors@~1.7.2:
     statuses ">= 1.5.0 < 2"
     toidentifier "1.0.0"
 
-i18next@^20.6.1:
-  version "20.6.1"
-  resolved "https://registry.npmjs.org/i18next/-/i18next-20.6.1.tgz"
-  integrity sha512-yCMYTMEJ9ihCwEQQ3phLo7I/Pwycf8uAx+sRHwwk5U9Aui/IZYgQRyMqXafQOw5QQ7DM1Z+WyEXWIqSuJHhG2A==
+i18next@^21.1.0:
+  version "21.1.0"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-21.1.0.tgz#48da88faf63ba4523d704e9259ca816541e00de5"
+  integrity sha512-1JJSAh7jI4bcBzwk8OQVrifyLdYYMJoanF8+9rcqbROAiKr3eEV9Cc3rd4065teylbo+d/h8OaTnheRZAKG4WA==
   dependencies:
     "@babel/runtime" "^7.12.0"
 
@@ -5187,6 +5199,11 @@ lodash.get@^4.4.2:
   resolved "https://registry.npmjs.org/lodash.get/-/lodash.get-4.4.2.tgz"
   integrity sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
 
+lodash.has@^4.5.2:
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/lodash.has/-/lodash.has-4.5.2.tgz#d19f4dc1095058cccbe2b0cdf4ee0fe4aa37c862"
+  integrity sha1-0Z9NwQlQWMzL4rDN9O4P5Ko3yGI=
+
 lodash.isempty@^4.4.0:
   version "4.4.0"
   resolved "https://registry.npmjs.org/lodash.isempty/-/lodash.isempty-4.4.0.tgz"
@@ -5757,10 +5774,10 @@ nanomatch@^1.2.9:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-native-base@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.npmjs.org/native-base/-/native-base-3.1.0.tgz"
-  integrity sha512-7ow2QyICOonkDgEiHl/clShLPHI17KoLRb8JERzqwsntAGVneFisvz/r/bWvapSNe1aBSGPyHanPZE49detTWw==
+native-base@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/native-base/-/native-base-3.2.0.tgz#03cc51bf3624141833103330eae8f9b9fd7bbf35"
+  integrity sha512-s7lM0/xupz3AMVMMl59z8yl15T2cbnR662gwgXXGOpiFk10dR61jP3q8kGap+GRF8lRssKAZkN/a0OqV/JFAHA==
   dependencies:
     "@react-aria/focus" "^3.2.3"
     "@react-aria/utils" "^3.6.0"
@@ -5778,9 +5795,11 @@ native-base@^3.1.0:
     "@react-native-aria/utils" "^0.2.7"
     "@react-stately/combobox" "^3.0.0-alpha.1"
     "@react-stately/radio" "^3.2.1"
+    "@types/lodash.has" "^4.5.6"
     "@types/styled-system" "^5.1.9"
     lodash.clonedeep "^4.5.0"
     lodash.get "^4.4.2"
+    lodash.has "^4.5.2"
     lodash.isempty "^4.4.0"
     lodash.isequal "^4.5.0"
     lodash.isnil "^4.0.0"
@@ -6349,10 +6368,10 @@ react-dom@16.13.1:
     prop-types "^15.6.2"
     scheduler "^0.19.1"
 
-react-hook-form@^7.15.4:
-  version "7.15.4"
-  resolved "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.15.4.tgz"
-  integrity sha512-jEtsDBPfpkz1uuJVlTLDOg+jO3cG9pFHT3g5uayVvlNT551IetXE1iwrSaxUR/QPWyJA2FLx4Q/VjO2viZNfLg==
+react-hook-form@^7.16.0:
+  version "7.16.0"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.16.0.tgz#7769dabe5f81690568dae4ef44fbd19525ae04cd"
+  integrity sha512-94sQPKcDSK7D88IMzOI4ASFQpegtlR+rlA+RFfHDQUAq2jbgUN8D3fR0hA9/X0Wusg/LyDdrB4NMt0SL6vttuA==
 
 react-i18next@^11.12.0:
   version "11.12.0"
