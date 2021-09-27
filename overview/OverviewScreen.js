@@ -5,8 +5,9 @@ import {
   authenticatedFetch,
   handleAuthenticationError,
 } from "../authentication/authenticatedFetch";
-import { Box, useToast, VStack,Text } from "native-base";
+import { Box, useToast, VStack, Text, Center, FlatList } from "native-base";
 import { AuthContext } from "../authentication/AuthContext";
+import { DrawerContentScrollView } from "@react-navigation/drawer";
 
 export default function OverviewScreen({ navigation }) {
   const { t } = useTranslation();
@@ -40,16 +41,20 @@ export default function OverviewScreen({ navigation }) {
   }, []);
 
   return (
-    <ScrollView>
-      <Box flex={1} p={2} w="90%" mx="auto">
-        {bookingSumPerTenants.map((bookingSumPerTenantItem) => {
+    <Center flex="1">
+      <FlatList
+        data={bookingSumPerTenants}
+        renderItem={({item}) => (
           <VStack space={2} mt={5}>
-            <Text>Hallo</Text>
-            <Text>{bookingSumPerTenantItem.tenant.name}</Text>
+            <Text>{item.tenant.name}</Text>
+            <Text>{item.sum}</Text>
           </VStack>
-        })}
-      </Box>
+        )}
+        keyExtractor={(bookingSumPerTenantsItem) =>
+          bookingSumPerTenantsItem.tenant.id
+        }
+      />
       <Button onPress={() => loadTenantBookingOverview()} title="load" />
-    </ScrollView>
+    </Center>
   );
 }
