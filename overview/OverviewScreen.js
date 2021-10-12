@@ -5,7 +5,16 @@ import {
   authenticatedFetch,
   handleAuthenticationError,
 } from "../authentication/authenticatedFetch";
-import { Box, useToast, VStack, Text, Center, FlatList } from "native-base";
+import {
+  Flex,
+  useToast,
+  HStack,
+  Text,
+  Center,
+  FlatList,
+  Box,
+  Container,
+} from "native-base";
 import { AuthContext } from "../authentication/AuthContext";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 
@@ -41,20 +50,38 @@ export default function OverviewScreen({ navigation }) {
   }, []);
 
   return (
-    <Center flex="1">
-      <FlatList
-        data={bookingSumPerTenants}
-        renderItem={({item}) => (
-          <VStack space={2} mt={5}>
-            <Text>{item.tenant.name}</Text>
-            <Text>{item.sum}</Text>
-          </VStack>
-        )}
-        keyExtractor={(bookingSumPerTenantsItem) =>
-          bookingSumPerTenantsItem.tenant.id
-        }
-      />
-      <Button onPress={() => loadTenantBookingOverview()} title="load" />
+    <Center flex={1}>
+      <Box
+      w={{
+        base: "100%",
+        md: "25%",
+      }} safeArea
+    >
+        <FlatList
+          data={bookingSumPerTenants}
+          renderItem={({ item }) => (
+            <Box px={4} py={2}>
+            <HStack space={2} justifyContent="space-between">
+              <Flex alignItems="flex-start">
+                <Text>{item.tenant.name}</Text>
+              </Flex>
+              <Flex alignItems="flex-end">
+                <Text>{new Intl.NumberFormat('de-DE', {
+                    style: 'currency',
+                    currency: 'EUR',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  }).format(item.sum / 100)}</Text>
+              </Flex>
+            </HStack>
+            </Box>
+          )}
+          keyExtractor={(bookingSumPerTenantsItem) =>
+            bookingSumPerTenantsItem.tenant.id
+          }
+        />
+        <Button onPress={() => loadTenantBookingOverview()} title="load" />
+      </Box>
     </Center>
   );
 }
