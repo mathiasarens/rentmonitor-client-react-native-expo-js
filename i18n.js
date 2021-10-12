@@ -20,7 +20,9 @@ const resources = {
             signIn: 'SignIn',
             unauthenticatedError: 'Session expired',
             connectionError: 'Remote connection error',
-            welcome: 'Welcome'
+            welcome: 'Welcome',
+
+            overviewScreenLoad: 'Reload'
           },
         },
         de: {
@@ -31,7 +33,9 @@ const resources = {
             signIn: 'Anmelden',
             unauthenticatedError: 'Sitzung abgelaufen',
             connectionError: 'Verbindungsfehler',
-            welcome: 'Willkommen'
+            welcome: 'Willkommen',
+
+            overviewScreenLoad: 'Aktualisieren'
           },
         },
       
