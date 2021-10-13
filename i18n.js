@@ -22,7 +22,9 @@ const resources = {
             connectionError: 'Remote connection error',
             welcome: 'Welcome',
 
-            overviewScreenLoad: 'Reload'
+            overviewScreenLoad: 'Reload',
+            overviewScreenSyncAccounts: 'Sync Accounts',
+            overviewScreenAccountSynchronizationResult: '{{numberOfAccounts}} Accounts synchronized. {{numberOfErrors}} errors.'
           },
         },
         de: {
@@ -35,7 +37,9 @@ const resources = {
             connectionError: 'Verbindungsfehler',
             welcome: 'Willkommen',
 
-            overviewScreenLoad: 'Aktualisieren'
+            overviewScreenLoad: 'Aktualisieren',
+            overviewScreenSyncAccounts: 'Konten abfragen',
+            overviewScreenAccountSynchronizationResult:'{{numberOfAccounts}} Konten synchronisiert. {{numberOfErrors}} Fehler.',
           },
         },
       

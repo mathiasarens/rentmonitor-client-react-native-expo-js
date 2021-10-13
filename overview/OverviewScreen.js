@@ -15,6 +15,7 @@ import {
   Button,
   Container,
 } from "native-base";
+import {subDays} from 'date-fns';
 import { AuthContext } from "../authentication/AuthContext";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 
@@ -44,6 +45,33 @@ export default function OverviewScreen({ navigation }) {
         });
       });
   }, [t, navigation]);
+
+  const synchronizeAccounts = useCallback(() => {
+    const today = new Date();
+    authenticatedFetch("/account-synchronization/all", signOut, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+      body:{from: subDays(today, 30),to: today}
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log('Account synchronization result: ',data);
+        toast.show({title: t('overviewScreenAccountSynchronizationResult', {
+          numberOfAccounts: data.length,
+          numberOfErrors: data.filter(item => 'error' in item).length
+        })})
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.show({
+          title: t(handleAuthenticationError(error)),
+        });
+      });
+  }, []);
 
   useEffect(() => {
     loadTenantBookingOverview();
@@ -85,7 +113,12 @@ export default function OverviewScreen({ navigation }) {
         />
         <Box px={4} py={4}>
           <HStack space={2} justifyContent="space-between">
-            <Button onPress={() => loadTenantBookingOverview()}>{t('overviewScreenLoad')}</Button>
+            <Button onPress={() => loadTenantBookingOverview()}>
+              {t('overviewScreenLoad')}
+            </Button>
+            <Button onPress={() => synchronizeAccounts()}>
+              {t('overviewScreenSyncAccounts')}
+            </Button>
           </HStack>
         </Box>
       </Box>
