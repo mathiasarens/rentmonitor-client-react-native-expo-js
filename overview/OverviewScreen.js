@@ -15,7 +15,7 @@ import {
   Button,
   Container,
 } from "native-base";
-import {subDays} from 'date-fns';
+import { subDays } from "date-fns";
 import { AuthContext } from "../authentication/AuthContext";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 
@@ -24,8 +24,12 @@ export default function OverviewScreen({ navigation }) {
   const toast = useToast();
   const { signOut } = React.useContext(AuthContext);
   const [bookingSumPerTenants, setBookingSumPerTenants] = useState([]);
+  const [loadingBookings, setLoadingBookings] = useState(false);
+  const [loadingAccountStatements, setLoadingAccountStatements] =
+    useState(false);
 
   const loadTenantBookingOverview = useCallback(() => {
+    setLoadingBookings(true);
     authenticatedFetch("/tenant-booking-overview", signOut, {
       method: "GET",
       headers: {
@@ -43,33 +47,50 @@ export default function OverviewScreen({ navigation }) {
         toast.show({
           title: t(handleAuthenticationError(error)),
         });
+      })
+      .finally(() => {
+        setLoadingBookings(false);
       });
   }, [t, navigation]);
 
   const synchronizeAccounts = useCallback(() => {
     const today = new Date();
+    console.log(
+      "Fetch new account transactions request for: ",
+      JSON.stringify({ from: subDays(today, 30), to: today }, null, 2)
+    );
+    setLoadingAccountStatements(true);
     authenticatedFetch("/account-synchronization/all", signOut, {
       method: "POST",
       headers: {
         Accept: "application/json",
+        "Content-Type": "application/json",
       },
-      body:{from: subDays(today, 30),to: today}
+      body: JSON.stringify({ from: subDays(today, 30), to: today }, null, 2),
     })
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        console.log('Account synchronization result: ',data);
-        toast.show({title: t('overviewScreenAccountSynchronizationResult', {
-          numberOfAccounts: data.length,
-          numberOfErrors: data.filter(item => 'error' in item).length
-        })})
+        console.log("Account synchronization result: ", data);
+        toast.show({
+          title: t("overviewScreenAccountSynchronizationResult", {
+            numberOfAccounts: data.length,
+            numberOfErrors: data.filter((item) => "error" in item).length,
+          }),
+        });
       })
       .catch((error) => {
-        console.error(error);
+        console.log(
+          "Error fetching new account transactions: ",
+          JSON.stringify(error, null, 2)
+        );
         toast.show({
           title: t(handleAuthenticationError(error)),
         });
+      })
+      .finally(() => {
+        setLoadingAccountStatements(false);
       });
   }, []);
 
@@ -108,16 +129,22 @@ export default function OverviewScreen({ navigation }) {
             </Box>
           )}
           keyExtractor={(bookingSumPerTenantsItem) =>
-            bookingSumPerTenantsItem.tenant.id
+            bookingSumPerTenantsItem.tenant.id.toString()
           }
         />
         <Box px={4} py={4}>
           <HStack space={2} justifyContent="space-between">
-            <Button onPress={() => loadTenantBookingOverview()}>
-              {t('overviewScreenLoad')}
+            <Button
+              isLoading={loadingBookings}
+              onPress={() => loadTenantBookingOverview()}
+            >
+              {t("overviewScreenLoad")}
             </Button>
-            <Button onPress={() => synchronizeAccounts()}>
-              {t('overviewScreenSyncAccounts')}
+            <Button
+              isLoading={loadingAccountStatements}
+              onPress={() => synchronizeAccounts()}
+            >
+              {t("overviewScreenSyncAccounts")}
             </Button>
           </HStack>
         </Box>

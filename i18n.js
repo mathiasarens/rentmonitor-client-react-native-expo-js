@@ -17,10 +17,12 @@ const resources = {
             hello: 'Hello world',
             change: 'Change language',
             overview: 'Overview',
-            signIn: 'SignIn',
             unauthenticatedError: 'Session expired',
             connectionError: 'Remote connection error',
             welcome: 'Welcome',
+
+            signIn: 'SignIn',
+            signInError: 'Login error {{message}}',
 
             overviewScreenLoad: 'Reload',
             overviewScreenSyncAccounts: 'Sync Accounts',
@@ -31,11 +33,13 @@ const resources = {
           translation: {
             hello: 'Hallo',
             change: 'Sprache ändern',
-            overview: 'Uebersicht',
-            signIn: 'Anmelden',
+            overview: 'Übersicht',
             unauthenticatedError: 'Sitzung abgelaufen',
             connectionError: 'Verbindungsfehler',
             welcome: 'Willkommen',
+
+            signIn: 'Anmelden',
+            signInError: 'Anmeldefehler {{message}}',
 
             overviewScreenLoad: 'Aktualisieren',
             overviewScreenSyncAccounts: 'Konten abfragen',

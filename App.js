@@ -24,7 +24,7 @@ const Stack = createStackNavigator();
 
 export default function App({ navigation }) {
   const { t, i18n } = useTranslation();
-  const toast = useToast()
+  const toast = useToast();
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -63,7 +63,7 @@ export default function App({ navigation }) {
       try {
         userToken = await SecureStore.getItemAsync(ACCESS_TOKEN);
       } catch (e) {
-        console.error("Failed to restore ACCESS_TOKEN", e);
+        console.log("Failed to restore ACCESS_TOKEN", e);
       }
 
       // After restoring token, we may need to validate it in production apps
@@ -101,13 +101,19 @@ export default function App({ navigation }) {
 
           console.log(json);
           if (json.error) {
-            console.error(json.error);
+            console.log(
+              "ERROR: Login failed",
+              JSON.stringify(json.error, null, 2)
+            );
+            toast.show({
+              title: t("signInError", { message: json.error.message }),
+            });
           } else {
             await SecureStore.setItemAsync(ACCESS_TOKEN, json.token);
             dispatch({ type: "SIGN_IN", token: json.token });
           }
         } catch (error) {
-          console.error(error);
+          console.error(JSON.stringify(error, null, 2));
           toast.show({
             title: t("connectionError"),
           });
@@ -135,9 +141,9 @@ export default function App({ navigation }) {
         <NavigationContainer>
           <Stack.Navigator>
             {state.userToken == null ? (
-              <Stack.Screen name={t('signIn')} component={SignInScreen} />
+              <Stack.Screen name={t("signIn")} component={SignInScreen} />
             ) : (
-              <Stack.Screen name={t('overview')} component={OverviewScreen} />
+              <Stack.Screen name={t("overview")} component={OverviewScreen} />
             )}
           </Stack.Navigator>
         </NavigationContainer>
