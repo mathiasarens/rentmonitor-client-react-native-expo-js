@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { REACT_APP_BACKEND_URL_PREFIX } from "@env";
 import * as SecureStore from "expo-secure-store";
 import { useToast } from "native-base";
+import WelcomScreen from "./welcome/WelcomeScreen";
 function NotificationsScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -141,7 +142,10 @@ export default function App({ navigation }) {
         <NavigationContainer>
           <Stack.Navigator>
             {state.userToken == null ? (
+              <>
+              <Stack.Screen name={t("welcome")} component={WelcomScreen} />
               <Stack.Screen name={t("signIn")} component={SignInScreen} />
+              </>
             ) : (
               <Stack.Screen name={t("overview")} component={OverviewScreen} />
             )}
