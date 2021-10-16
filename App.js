@@ -143,8 +143,16 @@ export default function App({ navigation }) {
           <Stack.Navigator>
             {state.userToken == null ? (
               <>
-              <Stack.Screen name={t("welcome")} component={WelcomScreen} />
-              <Stack.Screen name={t("signIn")} component={SignInScreen} />
+                <Stack.Screen
+                  id="welcome"
+                  name={t("welcome")}
+                  component={WelcomScreen}
+                />
+                <Stack.Screen
+                  id="signIn"
+                  name={t("signIn")}
+                  component={SignInScreen}
+                />
               </>
             ) : (
               <Stack.Screen name={t("overview")} component={OverviewScreen} />

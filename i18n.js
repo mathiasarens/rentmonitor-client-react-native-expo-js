@@ -21,8 +21,10 @@ const resources = {
             connectionError: 'Remote connection error',
             welcome: 'Welcome',
 
-            signIn: 'SignIn',
+            signIn: 'Login',
             signInError: 'Login error {{message}}',
+
+            signUp: 'Sign up',
 
             overviewScreenLoad: 'Reload',
             overviewScreenSyncAccounts: 'Sync Accounts',
@@ -40,6 +42,8 @@ const resources = {
 
             signIn: 'Anmelden',
             signInError: 'Anmeldefehler {{message}}',
+
+            signUp: 'Registrieren',
 
             overviewScreenLoad: 'Aktualisieren',
             overviewScreenSyncAccounts: 'Konten abfragen',

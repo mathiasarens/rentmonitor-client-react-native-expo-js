@@ -130,9 +130,6 @@ export default function SignInScreen() {
             >
               Sign Up
             </Link>
-            <Text>
-              Version: ${REACT_APP_VERSION}
-            </Text>
           </HStack>
         </VStack>
       </Box>
