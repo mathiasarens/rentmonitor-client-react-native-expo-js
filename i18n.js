@@ -14,12 +14,13 @@ const resources = {
 
         en: {
           translation: {
-            hello: 'Hello world',
+            rentmonitor: 'RentMonitor',
             change: 'Change language',
             overview: 'Overview',
             unauthenticatedError: 'Session expired',
             connectionError: 'Remote connection error',
             welcome: 'Welcome',
+            bookings: 'Bookings',
 
             signIn: 'Login',
             signInError: 'Login error {{message}}',
@@ -33,12 +34,13 @@ const resources = {
         },
         de: {
           translation: {
-            hello: 'Hallo',
+            rentmonitor: 'RentMonitor',
             change: 'Sprache ändern',
             overview: 'Übersicht',
             unauthenticatedError: 'Sitzung abgelaufen',
             connectionError: 'Verbindungsfehler',
             welcome: 'Willkommen',
+            bookings: 'Buchungen',
 
             signIn: 'Anmelden',
             signInError: 'Anmeldefehler {{message}}',

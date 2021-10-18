@@ -13,6 +13,7 @@ import {
   FlatList,
   Box,
   Button,
+  Pressable,
   Container,
 } from "native-base";
 import { subDays } from "date-fns";
@@ -111,21 +112,29 @@ export default function OverviewScreen({ navigation }) {
           data={bookingSumPerTenants}
           renderItem={({ item }) => (
             <Box px={4} py={2}>
-              <HStack space={2} justifyContent="space-between">
-                <Flex alignItems="flex-start">
-                  <Text>{item.tenant.name}</Text>
-                </Flex>
-                <Flex alignItems="flex-end">
-                  <Text>
-                    {new Intl.NumberFormat("de-DE", {
-                      style: "currency",
-                      currency: "EUR",
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    }).format(item.sum / 100)}
-                  </Text>
-                </Flex>
-              </HStack>
+              <Pressable
+                onPress={() => {
+                  navigation.navigate("bookings", {
+                    tenantId: item.tenantId,
+                  });
+                }}
+              >
+                <HStack space={2} justifyContent="space-between">
+                  <Flex alignItems="flex-start">
+                    <Text>{item.tenant.name}</Text>
+                  </Flex>
+                  <Flex alignItems="flex-end">
+                    <Text>
+                      {new Intl.NumberFormat("de-DE", {
+                        style: "currency",
+                        currency: "EUR",
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      }).format(item.sum / 100)}
+                    </Text>
+                  </Flex>
+                </HStack>
+              </Pressable>
             </Box>
           )}
           keyExtractor={(bookingSumPerTenantsItem) =>

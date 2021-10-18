@@ -22,7 +22,7 @@ import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { REACT_APP_BACKEND_URL_PREFIX } from "@env";
 import { version } from "../package.json";
 
-export default function WelcomScreen({ navigation }) {
+export default function WelcomeScreen({ navigation }) {
   const { t } = useTranslation();
   const toast = useToast();
   const [backendVersion, setBackendVersion] = useState("down");

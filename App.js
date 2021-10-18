@@ -13,19 +13,29 @@ import { useTranslation } from "react-i18next";
 import { REACT_APP_BACKEND_URL_PREFIX } from "@env";
 import * as SecureStore from "expo-secure-store";
 import { useToast } from "native-base";
-import WelcomScreen from "./welcome/WelcomeScreen";
-function NotificationsScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Button onPress={() => navigation.goBack()} title="Go back home" />
-    </View>
-  );
-}
+import WelcomeScreen from "./welcome/WelcomeScreen";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import BookingScreen from "./booking/BookingScreen";
+
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App({ navigation }) {
   const { t, i18n } = useTranslation();
   const toast = useToast();
+
+  function LoggedInTabs() {
+    return (
+      <Tab.Navigator>
+        <Tab.Screen
+          name="overview"
+          component={OverviewScreen}
+          options={{ title: t("overview") }}
+        />
+      </Tab.Navigator>
+    );
+  }
+
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -146,7 +156,7 @@ export default function App({ navigation }) {
                 <Stack.Screen
                   id="welcome"
                   name={t("welcome")}
-                  component={WelcomScreen}
+                  component={WelcomeScreen}
                 />
                 <Stack.Screen
                   id="signIn"
@@ -155,7 +165,18 @@ export default function App({ navigation }) {
                 />
               </>
             ) : (
-              <Stack.Screen name={t("overview")} component={OverviewScreen} />
+              <>
+                <Stack.Screen
+                  name="rentmonitor"
+                  component={LoggedInTabs}
+                  options={{ title: t("rentmonitor") }}
+                />
+                <Stack.Screen
+                  name="bookings"
+                  component={BookingScreen}
+                  options={{ title: t("bookings") }}
+                />
+              </>
             )}
           </Stack.Navigator>
         </NavigationContainer>
