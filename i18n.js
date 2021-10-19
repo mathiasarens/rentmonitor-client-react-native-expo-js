@@ -21,6 +21,7 @@ const resources = {
             connectionError: 'Remote connection error',
             welcome: 'Welcome',
             bookings: 'Bookings',
+            dateFormat: 'dd/MM/yyyy',
 
             signIn: 'Login',
             signInError: 'Login error {{message}}',
@@ -41,7 +42,8 @@ const resources = {
             connectionError: 'Verbindungsfehler',
             welcome: 'Willkommen',
             bookings: 'Buchungen',
-
+            dateFormat: 'dd.MM.yyyy',
+            
             signIn: 'Anmelden',
             signInError: 'Anmeldefehler {{message}}',
 

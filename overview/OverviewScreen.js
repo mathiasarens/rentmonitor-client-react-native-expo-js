@@ -115,7 +115,7 @@ export default function OverviewScreen({ navigation }) {
               <Pressable
                 onPress={() => {
                   navigation.navigate("bookings", {
-                    tenantId: item.tenantId,
+                    tenantId: item.tenant.id,
                   });
                 }}
               >
