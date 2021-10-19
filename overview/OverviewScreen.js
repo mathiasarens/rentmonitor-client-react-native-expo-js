@@ -116,6 +116,7 @@ export default function OverviewScreen({ navigation }) {
                 onPress={() => {
                   navigation.navigate("bookings", {
                     tenantId: item.tenant.id,
+                    tenantName: item.tenant.name
                   });
                 }}
               >

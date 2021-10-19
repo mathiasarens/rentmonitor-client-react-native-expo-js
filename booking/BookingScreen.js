@@ -8,7 +8,7 @@ import {
   Center,
   FlatList,
   Box,
-  Button,
+  Heading,
   Container,
 } from "native-base";
 import {
@@ -16,7 +16,7 @@ import {
   handleAuthenticationError,
 } from "../authentication/authenticatedFetch";
 import { AuthContext } from "../authentication/AuthContext";
-import format from 'date-fns/format';
+import format from "date-fns/format";
 
 export default function BookingScreen({ route, navigation }) {
   const { t } = useTranslation();
@@ -28,12 +28,16 @@ export default function BookingScreen({ route, navigation }) {
   const loadBookings = useCallback(
     (tenantId) => {
       setLoadingBookings(true);
-      authenticatedFetch("/bookings?filter[where][tenantId]=" + tenantId, signOut, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-        },
-      })
+      authenticatedFetch(
+        "/bookings?filter[where][tenantId]=" + tenantId,
+        signOut,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      )
         .then((response) => {
           return response.json();
         })
@@ -59,22 +63,19 @@ export default function BookingScreen({ route, navigation }) {
 
   return (
     <Center flex={1}>
-      <Box
-        w={{
-          base: "100%",
-          md: "25%",
-        }}
-        safeArea
-      >
+      <Box px={4} safeArea>
+        <Heading pb={2}>{route.params.tenantName}</Heading>
+
+        
         <FlatList
           data={bookings}
           renderItem={({ item }) => (
-            <Box px={4} py={2}>
+            <Box py={2}>
               <HStack space={2} justifyContent="space-between">
-              <Flex alignItems="flex-start">
-                  <Text>{format(new Date(item.date), t('dateFormat'))}</Text>
-                </Flex>
                 <Flex alignItems="flex-start">
+                  <Text>{format(new Date(item.date), t("dateFormat"))}</Text>
+                </Flex>
+                <Flex alignItems="flex-start" maxWidth={40}>
                   <Text>{item.comment}</Text>
                 </Flex>
                 <Flex alignItems="flex-end">
@@ -87,12 +88,13 @@ export default function BookingScreen({ route, navigation }) {
                     }).format(item.amount / 100)}
                   </Text>
                 </Flex>
-              </HStack>
-            </Box>
+                </HStack>
+              </Box>
           )}
           keyExtractor={(booking) => booking.id.toString()}
         />
-      </Box>
+         </Box>
+ 
     </Center>
   );
 }
