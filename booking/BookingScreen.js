@@ -62,15 +62,20 @@ export default function BookingScreen({ route, navigation }) {
   }, []);
 
   return (
-    <Center flex={1}>
-      <Box px={4} safeArea>
-        <Heading pb={2}>{route.params.tenantName}</Heading>
+    <Center>
+      <Box
+        w={{
+          base: "100%",
+          md: "25%",
+        }}
+        safeArea
+      >
+        <Heading px={4} pb={2}>{route.params.tenantName}</Heading>
 
-        
         <FlatList
           data={bookings}
           renderItem={({ item }) => (
-            <Box py={2}>
+            <Box px={4} py={2}>
               <HStack space={2} justifyContent="space-between">
                 <Flex alignItems="flex-start">
                   <Text>{format(new Date(item.date), t("dateFormat"))}</Text>
@@ -88,13 +93,12 @@ export default function BookingScreen({ route, navigation }) {
                     }).format(item.amount / 100)}
                   </Text>
                 </Flex>
-                </HStack>
-              </Box>
+              </HStack>
+            </Box>
           )}
           keyExtractor={(booking) => booking.id.toString()}
         />
-         </Box>
- 
+      </Box>
     </Center>
   );
 }
