@@ -16,11 +16,15 @@ import { useToast } from "native-base";
 import WelcomeScreen from "./welcome/WelcomeScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import BookingScreen from "./booking/BookingScreen";
+import { withAuthenticator } from 'aws-amplify-react-native'
+import Amplify, { Auth } from 'aws-amplify';
+import awsconfig from './aws-exports';
+Amplify.configure(awsconfig);
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-export default function App({ navigation }) {
+function App({ navigation }) {
   const { t, i18n } = useTranslation();
   const toast = useToast();
 
@@ -184,3 +188,5 @@ export default function App({ navigation }) {
     </NativeBaseProvider>
   );
 }
+
+export default withAuthenticator(App)

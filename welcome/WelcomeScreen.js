@@ -21,11 +21,13 @@ import { AuthContext } from "../authentication/AuthContext";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { REACT_APP_BACKEND_URL_PREFIX } from "@env";
 import { version } from "../package.json";
+import Amplify, { Auth } from 'aws-amplify';
 
 export default function WelcomeScreen({ navigation }) {
   const { t } = useTranslation();
   const toast = useToast();
   const [backendVersion, setBackendVersion] = useState("down");
+  const [accessToken, setAccessToken] = useState('');
 
   const loadBackendVersion = useCallback(() => {
     fetch(`${REACT_APP_BACKEND_URL_PREFIX}/version`, {
@@ -51,7 +53,10 @@ export default function WelcomeScreen({ navigation }) {
       });
   }, [t, navigation]);
 
-  useEffect(() => {
+  useEffect(async () => {
+    const session = await Auth.currentSession();
+    console.log("AccessToken: ", session.getAccessToken());
+    setAccessToken(session.getAccessToken())
     loadBackendVersion();
   }, []);
 
@@ -71,6 +76,7 @@ export default function WelcomeScreen({ navigation }) {
           <Text fontSize="xs">Version: {version}</Text>
           <Text fontSize="xs">Backend URL: {REACT_APP_BACKEND_URL_PREFIX}</Text>
           <Text fontSize="xs">Backend Version: {backendVersion}</Text>
+          <Text fontSize="xs">Auth.currentSession: {accessToken.jwtToken}</Text>
         </VStack>
       
     </Center>
