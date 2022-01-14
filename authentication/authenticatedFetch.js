@@ -1,10 +1,13 @@
 import { ACCESS_TOKEN} from './AuthContext';
 import * as SecureStore from "expo-secure-store";
 import { REACT_APP_BACKEND_URL_PREFIX } from "@env";
+import { Auth } from 'aws-amplify';
 
 export async function authenticatedFetch(urlSuffix, signOut, options) {
-
-  options.headers['Authorization'] = `Bearer ${await SecureStore.getItemAsync(ACCESS_TOKEN)}`;
+  const amplifySession = await Auth.currentSession();
+  
+  options.headers['Authorization'] = `Bearer ${amplifySession.getAccessToken().getJwtToken()}`;
+  options.headers['Authentication'] = `Bearer ${amplifySession.getIdToken().getJwtToken()}`;
   return fetch(
     `${REACT_APP_BACKEND_URL_PREFIX}${urlSuffix}`,
     options,

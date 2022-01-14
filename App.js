@@ -19,7 +19,9 @@ import BookingScreen from "./booking/BookingScreen";
 import { withAuthenticator } from 'aws-amplify-react-native'
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from './aws-exports';
-Amplify.configure(awsconfig);
+Amplify.configure({...awsconfig, Analytics: {
+  disabled: true,
+}});
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -155,7 +157,7 @@ function App({ navigation }) {
       <AuthContext.Provider value={authContext}>
         <NavigationContainer>
           <Stack.Navigator>
-            {state.userToken == null ? (
+            {state.userToken != null ? (
               <>
                 <Stack.Screen
                   id="welcome"

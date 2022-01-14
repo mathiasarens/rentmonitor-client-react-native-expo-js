@@ -96,7 +96,7 @@ export default function OverviewScreen({ navigation }) {
   }, []);
 
   useEffect(() => {
-    loadTenantBookingOverview();
+    //loadTenantBookingOverview();
   }, []);
 
   return (
