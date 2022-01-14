@@ -55,8 +55,11 @@ export default function WelcomeScreen({ navigation }) {
 
   useEffect(async () => {
     const session = await Auth.currentSession();
+    console.log("Session: ", session);
     console.log("AccessToken: ", session.getAccessToken());
     setAccessToken(session.getAccessToken())
+    const userInfo = await Auth.currentUserInfo();
+    console.log("UserInfo: ", userInfo);
     loadBackendVersion();
   }, []);
 
