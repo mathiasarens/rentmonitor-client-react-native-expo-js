@@ -17,7 +17,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mathiasarens.rentmonitor-client-react-native-expo-js"
     },
     "android": {
       "adaptiveIcon": {

@@ -18,7 +18,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import BookingScreen from "./booking/BookingScreen";
 import { withAuthenticator } from 'aws-amplify-react-native'
 import Amplify, { Auth } from 'aws-amplify';
-import awsconfig from './aws-exports';
+import awsconfig from './src/aws-exports';
 Amplify.configure({...awsconfig, Analytics: {
   disabled: true,
 }});
