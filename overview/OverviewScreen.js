@@ -17,13 +17,10 @@ import {
   Container,
 } from "native-base";
 import { subDays } from "date-fns";
-import { AuthContext } from "../authentication/AuthContext";
-import { DrawerContentScrollView } from "@react-navigation/drawer";
 
 export default function OverviewScreen({ navigation }) {
   const { t } = useTranslation();
   const toast = useToast();
-  const { signOut } = React.useContext(AuthContext);
   const [bookingSumPerTenants, setBookingSumPerTenants] = useState([]);
   const [loadingBookings, setLoadingBookings] = useState(false);
   const [loadingAccountStatements, setLoadingAccountStatements] =
@@ -31,7 +28,7 @@ export default function OverviewScreen({ navigation }) {
 
   const loadTenantBookingOverview = useCallback(() => {
     setLoadingBookings(true);
-    authenticatedFetch("/tenant-booking-overview", signOut, {
+    authenticatedFetch("/tenant-booking-overview", {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -61,7 +58,7 @@ export default function OverviewScreen({ navigation }) {
       JSON.stringify({ from: subDays(today, 30), to: today }, null, 2)
     );
     setLoadingAccountStatements(true);
-    authenticatedFetch("/account-synchronization/all", signOut, {
+    authenticatedFetch("/account-synchronization/all", {
       method: "POST",
       headers: {
         Accept: "application/json",

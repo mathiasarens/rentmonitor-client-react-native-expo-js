@@ -16,9 +16,6 @@ import {
   Button,
   Container,
 } from "native-base";
-import { subDays } from "date-fns";
-import { AuthContext } from "../authentication/AuthContext";
-import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { REACT_APP_BACKEND_URL_PREFIX } from "@env";
 import { version } from "../package.json";
 import Amplify, { Auth } from 'aws-amplify';

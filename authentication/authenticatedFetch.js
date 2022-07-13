@@ -1,9 +1,7 @@
-import { ACCESS_TOKEN} from './AuthContext';
-import * as SecureStore from "expo-secure-store";
 import { REACT_APP_BACKEND_URL_PREFIX } from "@env";
 import { Auth } from 'aws-amplify';
 
-export async function authenticatedFetch(urlSuffix, signOut, options) {
+export async function authenticatedFetch(urlSuffix, options) {
   const amplifySession = await Auth.currentSession();
   
   options.headers['Authorization'] = `Bearer ${amplifySession.getAccessToken().getJwtToken()}`;
@@ -15,7 +13,7 @@ export async function authenticatedFetch(urlSuffix, signOut, options) {
     if (!response.ok) {
       if ([401, 403].indexOf(response.status) !== -1) {
         // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-        signOut();
+        Auth.signOut();
       }
       return Promise.reject(response);
     } else {

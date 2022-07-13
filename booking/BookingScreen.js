@@ -9,19 +9,17 @@ import {
   FlatList,
   Box,
   Heading,
-  Container,
 } from "native-base";
 import {
   authenticatedFetch,
   handleAuthenticationError,
 } from "../authentication/authenticatedFetch";
-import { AuthContext } from "../authentication/AuthContext";
 import format from "date-fns/format";
 
 export default function BookingScreen({ route, navigation }) {
   const { t } = useTranslation();
   const toast = useToast();
-  const { signOut } = React.useContext(AuthContext);
+
   const [loadingBookings, setLoadingBookings] = useState(false);
   const [bookings, setBookings] = useState([]);
 
@@ -30,7 +28,6 @@ export default function BookingScreen({ route, navigation }) {
       setLoadingBookings(true);
       authenticatedFetch(
         "/bookings?filter[where][tenantId]=" + tenantId,
-        signOut,
         {
           method: "GET",
           headers: {
