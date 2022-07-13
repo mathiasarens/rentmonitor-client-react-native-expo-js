@@ -97,14 +97,11 @@ export default function OverviewScreen({ navigation }) {
   }, []);
 
   return (
-    <Center flex={1}>
-      <Box
-        w={{
-          base: "100%",
-          md: "25%",
-        }}
-        safeArea
-      >
+    <Box flex={1} w={{
+      base: "100%",
+      md: "25%",
+    }}
+    safeArea>
         <FlatList
           data={bookingSumPerTenants}
           renderItem={({ item }) => (
@@ -156,6 +153,5 @@ export default function OverviewScreen({ navigation }) {
           </HStack>
         </Box>
       </Box>
-    </Center>
   );
 }
