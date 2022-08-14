@@ -16,11 +16,11 @@ const resources = {
           translation: {
             rentmonitor: 'RentMonitor',
             change: 'Change language',
-            overview: 'Overview',
+            overviewScreen: 'Overview',
             unauthenticatedError: 'Session expired',
             connectionError: 'Remote connection error',
             welcome: 'Welcome',
-            bookings: 'Bookings',
+            bookingsScreen: 'Bookings',
             dateFormat: 'dd/MM/yyyy',
 
             signIn: 'Login',
@@ -30,18 +30,19 @@ const resources = {
 
             overviewScreenLoad: 'Reload',
             overviewScreenSyncAccounts: 'Sync Accounts',
-            overviewScreenAccountSynchronizationResult: '{{numberOfAccounts}} Accounts synchronized. {{numberOfErrors}} errors.'
+            overviewScreenAccountSynchronizationResult: '{{numberOfAccounts}} Accounts synchronized. {{numberOfErrors}} errors.',
+            syncScreen: 'Account Sync',
           },
         },
         de: {
           translation: {
             rentmonitor: 'RentMonitor',
             change: 'Sprache ändern',
-            overview: 'Übersicht',
+            overviewScreen: 'Übersicht',
             unauthenticatedError: 'Sitzung abgelaufen',
             connectionError: 'Verbindungsfehler',
             welcome: 'Willkommen',
-            bookings: 'Buchungen',
+            bookingsScreen: 'Buchungen',
             dateFormat: 'dd.MM.yyyy',
             
             signIn: 'Anmelden',
@@ -52,6 +53,7 @@ const resources = {
             overviewScreenLoad: 'Aktualisieren',
             overviewScreenSyncAccounts: 'Konten abfragen',
             overviewScreenAccountSynchronizationResult:'{{numberOfAccounts}} Konten synchronisiert. {{numberOfErrors}} Fehler.',
+            syncScreen: 'Konten abfragen',
           },
         },
       

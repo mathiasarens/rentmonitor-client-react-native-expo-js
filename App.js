@@ -9,12 +9,18 @@ import { useTranslation } from "react-i18next";
 import { useToast } from "native-base";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import BookingScreen from "./booking/BookingScreen";
-import { withAuthenticator } from 'aws-amplify-react-native'
-import Amplify, { Auth } from 'aws-amplify';
-import awsconfig from './src/aws-exports';
-Amplify.configure({...awsconfig, Analytics: {
-  disabled: true,
-}});
+
+import { withAuthenticator } from "aws-amplify-react-native";
+import Amplify, { Auth } from "aws-amplify";
+import awsconfig from "./src/aws-exports";
+import SynchronizationScreen from "./src/screens/synchronization/SynchronizationScreen";
+
+Amplify.configure({
+  ...awsconfig,
+  Analytics: {
+    disabled: true,
+  },
+});
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -23,39 +29,41 @@ function App({ navigation }) {
   const { t, i18n } = useTranslation();
   const toast = useToast();
 
-  function LoggedInTabs() {
+  function OverviewStack() {
     return (
-      <Tab.Navigator>
-        <Tab.Screen
-          name="overview"
-          component={OverviewScreen}
-          options={{ title: t("overview") }}
-        />
-      </Tab.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen
+            name="overview"
+            component={OverviewScreen}
+            options={{ title: t("overviewScreen") }}
+          />
+          <Stack.Screen
+            name="bookings"
+            component={BookingScreen}
+            options={{ title: t("bookingsScreen") }}
+          />
+      </Stack.Navigator>
     );
   }
 
   return (
     <NativeBaseProvider>
-      
-        <NavigationContainer>
-          <Stack.Navigator>
-              <>
-                <Stack.Screen
-                  name="rentmonitor"
-                  component={LoggedInTabs}
-                  options={{ title: t("rentmonitor") }}
-                />
-                <Stack.Screen
-                  name="bookings"
-                  component={BookingScreen}
-                  options={{ title: t("bookings") }}
-                />
-              </>
-          </Stack.Navigator>
-        </NavigationContainer>
+      <NavigationContainer>
+        <Tab.Navigator>
+          <Tab.Screen
+            name="overviewStack"
+            component={OverviewStack}
+            options={{ title: t("overviewScreen") }}
+          />
+          <Tab.Screen
+            name="synchronize"
+            component={SynchronizationScreen}
+            options={{ title: t("syncScreen") }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
     </NativeBaseProvider>
   );
 }
 
-export default withAuthenticator(App)
+export default withAuthenticator(App);

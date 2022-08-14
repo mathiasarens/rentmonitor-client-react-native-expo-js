@@ -56,7 +56,7 @@ export default function BookingScreen({ route, navigation }) {
 
   useEffect(() => {
     loadBookings(route.params.tenantId);
-  }, []);
+  }, [route.params.tenantId]);
 
   return (
     <Center>
