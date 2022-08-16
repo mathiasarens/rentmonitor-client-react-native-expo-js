@@ -60,6 +60,7 @@ export default function OverviewScreen({ navigation }) {
       safeArea
     >
       <FlatList
+        flexGrow={1}
         data={bookingSumPerTenants}
         renderItem={({ item }) => (
           <Box px={4} py={2}>
