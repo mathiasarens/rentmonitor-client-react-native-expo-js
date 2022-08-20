@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useReducer } from "react";
 import { useTranslation } from "react-i18next";
 import {
   authenticatedFetch,
@@ -19,28 +19,41 @@ import {
   VStack,
   Skeleton,
 } from "native-base";
-import { subDays } from "date-fns";
 import sub from "date-fns/sub";
+
+const initialState = { expectedSyncResults: [1], syncResults: [] };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "start":
+      return {
+        expectedSyncResults: new Array(action.data).fill(0),
+        syncResults: [],
+      };
+    case "newResponse": {
+      return {
+        expectedSyncResults: state.expectedSyncResults.slice(0, -1),
+        syncResults: [...state.syncResults, action.data],
+      };
+    }
+    case "fail": {
+      return {
+        expectedSyncResults: state.expectedSyncResults.slice(0, -1),
+        syncResults: state.syncResults,
+      };
+    }
+    default:
+      throw new Error(`Unknown ${action.type}`);
+  }
+}
 
 export default function SynchronizationScreen({ navigation }) {
   const { t } = useTranslation();
   const toast = useToast();
-  const [bookingSumPerTenants, setBookingSumPerTenants] = useState([]);
-  const [loadingBookings, setLoadingBookings] = useState(false);
-  const [loadingAccountStatements, setLoadingAccountStatements] =
-    useState(false);
   const [accountSettingsItems, setAccountSettingsItems] = useState([]);
-  const { reset, handleSubmit } = useForm({
-    defaultValues: {
-      accountSettingsItem: null,
-      from: sub(new Date(), { months: 2 }),
-      to: new Date(),
-    },
-  });
-  const [expectedSyncResults, setExpectedSyncResults] = useState([]);
-  const [syncResults, setSyncResults] = useState([]);
   const [synchronizationButtonActive, setSynchronizationButtonActive] =
     useState(false);
+  const [syncState, dispatch] = useReducer(reducer, initialState);
 
   const loadAccountSettings = () => {
     authenticatedFetch("/account-settings", {
@@ -52,13 +65,6 @@ export default function SynchronizationScreen({ navigation }) {
       .then((response) => {
         response.json().then((responseAccountSettingsList) => {
           setAccountSettingsItems(responseAccountSettingsList);
-          if (responseAccountSettingsList.length > 0) {
-            reset({
-              accountSettingsItem: responseAccountSettingsList[0],
-              from: sub(new Date(), { months: 2 }),
-              to: new Date(),
-            });
-          }
           setSynchronizationButtonActive(true);
         });
       })
@@ -70,21 +76,22 @@ export default function SynchronizationScreen({ navigation }) {
       });
   };
 
-  const sync = useCallback(() => {
-    const synchronizeAccount = (request) => {
-      const bodyJson = JSON.stringify(request, null, 2);
-      authenticatedFetch("/account-synchronization/single", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: bodyJson,
-      })
-        .then((response) => {
-          switch (response.status) {
-            case 200:
-              response.json().then((json) => {
+  const synchronizeAccount = (request) => {
+    const bodyJson = JSON.stringify(request, null, 2);
+    authenticatedFetch("/account-synchronization/test", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: bodyJson,
+    })
+      .then((response) => {
+        switch (response.status) {
+          case 200:
+            response
+              .json()
+              .then((json) => {
                 console.log(
                   "Sync result received for: " +
                     json.accountName +
@@ -93,62 +100,51 @@ export default function SynchronizationScreen({ navigation }) {
                     ")"
                 );
                 console.log(json);
-                console.log(syncResults);
-                setSyncResults((prevSyncResults) => [...prevSyncResults, json]);
-              });
-              setExpectedSyncResults((arr) => {
-                arr.pop();
-                return arr;
-              });
-              break;
-            case 210:
-              response
-                .json()
-                .then((json) => {
-                  console.log(json);
-                  setExpectedSyncResults((arr) => {
-                    arr.pop();
-                    return arr;
-                  });
-                })
-                .catch((error) => {
-                  console.error(error);
-                  toast.show({
-                    title: t("connectionError"),
-                  });
-                  setExpectedSyncResults((arr) => {
-                    arr.pop();
-                    return arr;
-                  });
+                dispatch({ type: "newResponse", data: json });
+              })
+              .catch((error) => {
+                console.error(error);
+                toast.show({
+                  title: t("connectionError"),
                 });
-              break;
-            default:
-              console.error(response);
-              toast.show({
-                title: t("connectionError"),
+                dispatch({ type: "fail" });
               });
-              setExpectedSyncResults((arr) => {
-                arr.pop();
-                return arr;
+            break;
+          case 210:
+            response
+              .json()
+              .then((json) => {
+                console.log(json);
+                dispatch({ type: "fail" });
+              })
+              .catch((error) => {
+                console.error(error);
+                toast.show({
+                  title: t("connectionError"),
+                });
+                dispatch({ type: "fail" });
               });
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          toast.show({
-            title: t(handleAuthenticationError(error)),
-          });
-          setExpectedSyncResults((arr) => {
-            arr.pop();
-            return arr;
-          });
+            break;
+          default:
+            console.error(response);
+            toast.show({
+              title: t("connectionError"),
+            });
+            dispatch({ type: "fail" });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.show({
+          title: t(handleAuthenticationError(error)),
         });
-    };
+        dispatch({ type: "fail" });
+      });
+  };
 
-    setExpectedSyncResults(new Array(accountSettingsItems.length).fill(0));
-    setSyncResults([]);
+  const sync = () => {
+    dispatch({ type: "start", data: accountSettingsItems.length });
     console.log("sync() called");
-    console.log(syncResults);
     accountSettingsItems.forEach((accountSettingsItem) => {
       const request = {};
       request.from = sub(new Date(), { months: 2 });
@@ -156,7 +152,7 @@ export default function SynchronizationScreen({ navigation }) {
       request.accountSettingsId = accountSettingsItem.id;
       synchronizeAccount(request);
     });
-  }, [accountSettingsItems, t]);
+  };
 
   useEffect(() => {
     loadAccountSettings();
@@ -189,7 +185,7 @@ export default function SynchronizationScreen({ navigation }) {
         <HStack space={2} justifyContent="space-between">
           <Button
             isLoading={
-              synchronizationButtonActive && expectedSyncResults.length > 0
+              synchronizationButtonActive && syncState.expectedSyncResults.length > 0
             }
             onPress={sync}
           >
@@ -198,7 +194,7 @@ export default function SynchronizationScreen({ navigation }) {
         </HStack>
       </VStack>
       <VStack px={4} py={4}>
-        {syncResults.map((syncResult,index) => {
+        {syncState.syncResults.map((syncResult, index) => (
           <Box key={`synResult${index}`}>
             <Text>{syncResult.accountName}</Text>
             <FlatList
@@ -232,11 +228,11 @@ export default function SynchronizationScreen({ navigation }) {
               }
             />
           </Box>
-        })}
+        ))}
       </VStack>
       <VStack px={4} py={4}>
-        {expectedSyncResults.map((item, index) => (
-          <Skeleton.Text key={index} />
+        {syncState.expectedSyncResults.map((item, index) => (
+          <Skeleton.Text key={`expectedSyncResults${index}`} />
         ))}
       </VStack>
     </Box>
