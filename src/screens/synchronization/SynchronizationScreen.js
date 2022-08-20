@@ -21,7 +21,7 @@ import {
 } from "native-base";
 import sub from "date-fns/sub";
 
-const initialState = { expectedSyncResults: [1], syncResults: [] };
+const initialState = { expectedSyncResults: [], syncResults: [] };
 
 function reducer(state, action) {
   switch (action.type) {
@@ -166,26 +166,20 @@ export default function SynchronizationScreen({ navigation }) {
       }}
       safeArea
     >
-      <FlatList
-        data={accountSettingsItems}
-        renderItem={({ item }) => (
-          <Box px={4} py={2}>
-            <HStack justifyContent="space-between">
-              <Flex alignItems="flex-start">
-                <Text>{item.name}</Text>
-              </Flex>
-            </HStack>
-          </Box>
-        )}
-        keyExtractor={(accountSettingsItem) =>
-          accountSettingsItem.id.toString()
-        }
-      />
-      <VStack px={4} py={4}>
+      <Box px={4}>
+      <VStack>
+        {accountSettingsItems.map((accountSettingsItem, index) => (
+          <HStack space={2} justifyContent="space-between" py={1}>
+            <Text>{accountSettingsItem.name}</Text>
+          </HStack>
+        ))}
+      </VStack>
+      <VStack mb={4}>
         <HStack space={2} justifyContent="space-between">
           <Button
             isLoading={
-              synchronizationButtonActive && syncState.expectedSyncResults.length > 0
+              synchronizationButtonActive &&
+              syncState.expectedSyncResults.length > 0
             }
             onPress={sync}
           >
@@ -193,17 +187,18 @@ export default function SynchronizationScreen({ navigation }) {
           </Button>
         </HStack>
       </VStack>
-      <VStack px={4} py={4}>
+      <VStack>
         {syncState.syncResults.map((syncResult, index) => (
           <Box key={`synResult${index}`}>
             <Text>{syncResult.accountName}</Text>
+
             <FlatList
               data={syncResult.newBookings}
-              renderItem={({ booking }) => (
+              renderItem={({ item }) => (
                 <Box px={4} py={2}>
                   <HStack justifyContent="space-between">
                     <Flex alignItems="flex-start">
-                      <Text>{booking.date}</Text>
+                      <Text>{item.date}</Text>
                     </Flex>
                   </HStack>
                 </Box>
@@ -214,11 +209,11 @@ export default function SynchronizationScreen({ navigation }) {
             />
             <FlatList
               data={syncResult.unmatchedTransactions}
-              renderItem={({ transaction }) => (
+              renderItem={({ item }) => (
                 <Box px={4} py={2}>
                   <HStack justifyContent="space-between">
                     <Flex alignItems="flex-start">
-                      <Text>{transaction.date}</Text>
+                      <Text>{item.date}</Text>
                     </Flex>
                   </HStack>
                 </Box>
@@ -230,11 +225,12 @@ export default function SynchronizationScreen({ navigation }) {
           </Box>
         ))}
       </VStack>
-      <VStack px={4} py={4}>
+      <VStack>
         {syncState.expectedSyncResults.map((item, index) => (
           <Skeleton.Text key={`expectedSyncResults${index}`} />
         ))}
       </VStack>
+      </Box>
     </Box>
   );
 }
