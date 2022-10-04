@@ -32,6 +32,8 @@ const resources = {
             overviewScreenSyncAccounts: 'Sync Accounts',
             overviewScreenAccountSynchronizationResult: '{{numberOfAccounts}} Accounts synchronized. {{numberOfErrors}} errors.',
             syncScreen: 'Account Sync',
+            syncScreenResultNewBookings: 'New Bookings',
+            syncScreenResultUnmatchedTransactions: 'Unmatched Transactions'
           },
         },
         de: {
@@ -54,6 +56,8 @@ const resources = {
             overviewScreenSyncAccounts: 'Konten abfragen',
             overviewScreenAccountSynchronizationResult:'{{numberOfAccounts}} Konten synchronisiert. {{numberOfErrors}} Fehler.',
             syncScreen: 'Konten abfragen',
+            syncScreenResultNewBookings: 'Neue Buchungen',
+            syncScreenResultUnmatchedTransactions: 'Neue Transaktionen'
           },
         },
       
