@@ -22,6 +22,7 @@ const resources = {
             welcome: 'Welcome',
             bookingsScreen: 'Bookings',
             dateFormat: 'dd/MM/yyyy',
+            accounts: 'Accounts',
 
             signIn: 'Login',
             signInError: 'Login error {{message}}',
@@ -46,7 +47,8 @@ const resources = {
             welcome: 'Willkommen',
             bookingsScreen: 'Buchungen',
             dateFormat: 'dd.MM.yyyy',
-            
+            accounts: 'Konten',
+
             signIn: 'Anmelden',
             signInError: 'Anmeldefehler {{message}}',
 

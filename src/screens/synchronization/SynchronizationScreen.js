@@ -16,8 +16,10 @@ import {
   Button,
   Pressable,
   Container,
+  ScrollView,
   VStack,
   Skeleton,
+  Heading,
 } from "native-base";
 import sub from "date-fns/sub";
 import format from "date-fns/format";
@@ -165,21 +167,14 @@ export default function SynchronizationScreen({ navigation }) {
         base: "100%",
         md: "25%",
       }}
-      safeArea
     >
       <Box px={4}>
-        <VStack>
+        <Box mb={2}>
+          <Heading size="md">{t("accounts")}</Heading>
           {accountSettingsItems.map((accountSettingsItem, index) => (
-            <HStack
-              space={2}
-              justifyContent="space-between"
-              py={1}
-              key={accountSettingsItem.id}
-            >
-              <Text>{accountSettingsItem.name}</Text>
-            </HStack>
+            <Text key={accountSettingsItem.id}>{accountSettingsItem.name}</Text>
           ))}
-        </VStack>
+        </Box>
         <VStack mb={4}>
           <HStack space={2} justifyContent="space-between">
             <Button
@@ -193,64 +188,64 @@ export default function SynchronizationScreen({ navigation }) {
             </Button>
           </HStack>
         </VStack>
-        <VStack>
+        <ScrollView>
           {syncState.syncResults.map((syncResult, syncIndex) => (
-            <VStack key={`synResult${syncIndex}`}>
-              <Text>{syncResult.accountName}</Text>
-              <Text>{t("syncScreenResultNewBookings")}</Text>
-              <VStack>
-                {syncResult.newBookings.map((booking, bookingIndex) => (
-                  <>
-                    <HStack
-                      key={`booking${syncIndex}${booking.id}`}
-                      justifyContent="space-between"
-                    >
-                      <Flex alignItems="flex-start">
-                        <Text>
-                          {format(new Date(booking.date), t("dateFormat"))}
-                        </Text>
-                      </Flex>
-                    </HStack>
-                    <HStack
-                      key={`booking${syncIndex}${booking.id}`}
-                      justifyContent="space-between"
-                    >
-                      <Flex alignItems="flex-start">
-                        <Text>
+            <VStack key={`synResult${syncIndex}`} mb={4}>
+              <Heading size="md">{syncResult.accountName}</Heading>
+              <Heading size="xs">{t("syncScreenResultNewBookings")}</Heading>
+              {syncResult.newBookings.map((booking, bookingIndex) => (
+                <Box key={`booking${syncIndex}${booking.id}`} mb={2}>
+                  <HStack justifyContent="space-between">
+                    <Text>
+                      {format(new Date(booking.date), t("dateFormat"))}
+                    </Text>
+
+                    <Text>
+                      {new Intl.NumberFormat("de-DE", {
+                        style: "currency",
+                        currency: "EUR",
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      }).format(booking.amount / 100)}
+                    </Text>
+                  </HStack>
+                  <Text>{booking.comment}</Text>
+                </Box>
+              ))}
+
+              <Heading size="xs">
+                {t("syncScreenResultUnmatchedTransactions")}
+              </Heading>
+
+              {syncResult.unmatchedTransactions.map(
+                (transaction, transactionIndex) => (
+                  <Box
+                    key={`${
+                      syncResult.accountName
+                    }UnmatchedTransactions${transaction.id.toString()}`}
+                    mb={2}
+                  >
+                    <HStack justifyContent="space-between">
+                      <Text>
+                        {format(new Date(transaction.date), t("dateFormat"))}
+                      </Text>
+                      <Text>
                         {new Intl.NumberFormat("de-DE", {
-                      style: "currency",
-                      currency: "EUR",
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    }).format(booking.amount / 100)}
-                        </Text>
-                      </Flex>
+                          style: "currency",
+                          currency: "EUR",
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        }).format(transaction.amount / 100)}
+                      </Text>
                     </HStack>
-                  </>
-                ))}
-              </VStack>
-              <Text>{t("syncScreenResultUnmatchedTransactions")}</Text>
-              <VStack>
-                {syncResult.unmatchedTransactions.map(
-                  (transaction, transactionIndex) => (
-                    <HStack
-                      key={`${
-                        syncResult.accountName
-                      }UnmatchedTransactions${transaction.id.toString()}`}
-                      justifyContent="space-between"
-                    >
-                      <Flex alignItems="flex-start">
-                        <Text> 
-                          {format(new Date(transaction.date), t("dateFormat"))}
-                        </Text>
-                      </Flex>
-                    </HStack>
-                  )
-                )}
-              </VStack>
+                    <Text>{transaction.name}</Text>
+                    <Text>{transaction.text}</Text>
+                  </Box>
+                )
+              )}
             </VStack>
           ))}
-        </VStack>
+        </ScrollView>
         <VStack>
           {syncState.expectedSyncResults.map((item, index) => (
             <Skeleton.Text key={`expectedSyncResults${index}`} />

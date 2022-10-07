@@ -57,7 +57,6 @@ export default function OverviewScreen({ navigation }) {
         base: "100%",
         md: "25%",
       }}
-      safeArea
     >
       <FlatList
         flexGrow={1}
