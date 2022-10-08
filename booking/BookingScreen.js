@@ -59,16 +59,13 @@ export default function BookingScreen({ route, navigation }) {
   }, [route.params.tenantId]);
 
   return (
-    <Center>
       <Box
         w={{
           base: "100%",
           md: "25%",
         }}
-        safeArea
       >
         <Heading px={4} pb={2}>{route.params.tenantName}</Heading>
-
         <FlatList
           data={bookings}
           renderItem={({ item }) => (
@@ -96,6 +93,5 @@ export default function BookingScreen({ route, navigation }) {
           keyExtractor={(booking) => booking.id.toString()}
         />
       </Box>
-    </Center>
   );
 }

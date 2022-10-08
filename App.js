@@ -3,7 +3,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import OverviewScreen from "./overview/OverviewScreen";
 import { createStackNavigator } from "@react-navigation/stack";
-import { NativeBaseProvider, Alert } from "native-base";
+import { NativeBaseProvider, Box } from "native-base";
 import "./i18n";
 import { useTranslation } from "react-i18next";
 import { useToast } from "native-base";
