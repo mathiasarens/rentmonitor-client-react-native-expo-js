@@ -1,5 +1,6 @@
 import {
   Box,
+  Container,
   Button,
   FlatList,
   Flex,
@@ -8,12 +9,15 @@ import {
   Text,
   useToast,
 } from "native-base";
+import {
+  RefreshControl,
+} from 'react-native';
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   authenticatedFetch,
   handleAuthenticationError,
-} from "../authentication/authenticatedFetch";
+} from "../../../authentication/authenticatedFetch";
 
 export default function OverviewScreen({ navigation }) {
   const { t } = useTranslation();
@@ -51,16 +55,17 @@ export default function OverviewScreen({ navigation }) {
   }, []);
 
   return (
-    <Box
-      flex={1}
-      w={{
-        base: "100%",
-        md: "25%",
-      }}
-    >
+    <Flex>
       <FlatList
         flexGrow={1}
         data={bookingSumPerTenants}
+        refreshControl={
+          <RefreshControl
+            //refresh control used for the Pull to Refresh
+            refreshing={loadingBookings}
+            onRefresh={() => loadTenantBookingOverview()}
+          />
+        }
         renderItem={({ item }) => (
           <Box px={4} py={2}>
             <Pressable
@@ -93,16 +98,6 @@ export default function OverviewScreen({ navigation }) {
           bookingSumPerTenantsItem.tenant.id.toString()
         }
       />
-      <Box px={4} py={4}>
-        <HStack space={2} justifyContent="space-between">
-          <Button
-            isLoading={loadingBookings}
-            onPress={() => loadTenantBookingOverview()}
-          >
-            {t("overviewScreenLoad")}
-          </Button>
-        </HStack>
-      </Box>
-    </Box>
+    </Flex>
   );
 }

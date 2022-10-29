@@ -5,7 +5,6 @@ import {
   useToast,
   HStack,
   Text,
-  Center,
   FlatList,
   Box,
   Heading,
@@ -13,7 +12,7 @@ import {
 import {
   authenticatedFetch,
   handleAuthenticationError,
-} from "../authentication/authenticatedFetch";
+} from "../../../authentication/authenticatedFetch";
 import format from "date-fns/format";
 
 export default function BookingScreen({ route, navigation }) {

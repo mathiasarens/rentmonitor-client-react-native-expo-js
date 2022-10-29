@@ -81,7 +81,7 @@ export default function SynchronizationScreen({ navigation }) {
 
   const synchronizeAccount = (request) => {
     const bodyJson = JSON.stringify(request, null, 2);
-    authenticatedFetch("/account-synchronization/test", {
+    authenticatedFetch("/account-synchronization/single", {
       method: "POST",
       headers: {
         Accept: "application/json",

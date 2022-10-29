@@ -29,7 +29,6 @@ const resources = {
 
             signUp: 'Sign up',
 
-            overviewScreenLoad: 'Reload',
             overviewScreenSyncAccounts: 'Sync Accounts',
             overviewScreenAccountSynchronizationResult: '{{numberOfAccounts}} Accounts synchronized. {{numberOfErrors}} errors.',
             syncScreen: 'Account Sync',
@@ -54,7 +53,6 @@ const resources = {
 
             signUp: 'Registrieren',
 
-            overviewScreenLoad: 'Aktualisieren',
             overviewScreenSyncAccounts: 'Konten abfragen',
             overviewScreenAccountSynchronizationResult:'{{numberOfAccounts}} Konten synchronisiert. {{numberOfErrors}} Fehler.',
             syncScreen: 'Konten abfragen',
