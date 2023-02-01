@@ -10,8 +10,8 @@ import { useToast } from "native-base";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import BookingScreen from "./src/screens/booking/BookingScreen";
 
-import { withAuthenticator } from "aws-amplify-react-native";
-import Amplify from "@aws-amplify/core";
+import { Authenticator, withAuthenticator } from '@aws-amplify/ui-react-native';
+import { Amplify } from 'aws-amplify';
 import awsconfig from "./src/aws-exports";
 import SynchronizationScreen from "./src/screens/synchronization/SynchronizationScreen";
 import Ionicons from "@expo/vector-icons/Ionicons";
